@@ -18,6 +18,7 @@
                         @endif
                         {!! Form::open()->route('user.store')->method('post') !!}
                         @include('admin.user._form')
+                       
                         <div class="row">
                               <div class="col-12">
                                    <div class="float-end">

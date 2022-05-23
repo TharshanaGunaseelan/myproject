@@ -21,7 +21,8 @@ class CreateDependsTable extends Migration
             $table->foreignId('familyhead_id');
             $table->string('nic')->nullable();
             $table->integer('age');
-            $table->enum('gender',['Male','female']);
+            $table->enum('gender',['Male','Female']);
+            $table->softDeletes();
             
             $table->timestamps();
 

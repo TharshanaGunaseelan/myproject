@@ -71,6 +71,8 @@ class PeopleController extends Controller
     public function edit(People $people){
         $villages= Village::all()->pluck('villagename', 'id')->toArray();
         $villages['']= '----Choose Your Village----';
+        $people->load('depends');
+
         return view('admin.people.edit',compact('villages','people'));
 
     }
@@ -80,10 +82,66 @@ class PeopleController extends Controller
     }
 
     public function update(People $people,PeopleUpdateRequest $request){
-        $data=$request->validated();
         
-      
+        $data=$request->validated();
         $people->update($data);
+
+
+        if($request->input('firstnames')!=null){
+           
+            if($people->depends()->exists() ){
+                
+                foreach($request->input('nics') as  $i=>$nic){
+                    if($nic == null){
+                        continue;
+                    }  
+                foreach($people->depends as $depend){
+                   
+                    if($depend->nic == $data['nics'][$i]){
+                        Depend::update([
+
+                            
+                        'title' => $data['titles'][$i],
+                        'firstname' => $data['firstnames'][$i],
+                        'lastname' => $data['lastnames'][$i],
+                        'age' => $data['ages'][$i],
+                        'nic' => $data['nics'][$i],
+                        'gender'=> $data['genders'][$i],
+                        'familyhead_id'=> $people->id,
+                        ]);
+                    }else{
+                        Depend::create([
+                            
+                        'title' => $data['titles'][$i],
+                        'firstname' => $data['firstnames'][$i],
+                        'lastname' => $data['lastnames'][$i],
+                        'age' => $data['ages'][$i],
+                        'nic' => $data['nics'][$i],
+                        'gender'=> $data['genders'][$i],
+                        'familyhead_id'=> $people->id,
+                        ]);
+                    }
+                }}
+            }else{
+               
+                foreach($data['firstnames'] as $i=>$firstname){
+                    if($firstname == null){
+                        continue;
+                    }
+                    Depend::create([
+                    
+                        'title' => $data['titles'][$i],
+                        'firstname' => $data['firstnames'][$i],
+                        'lastname' => $data['lastnames'][$i],
+                         'age' => $data['ages'][$i],
+                         'nic' => $data['nics'][$i],
+                         'gender'=> $data['genders'][$i],
+                        'familyhead_id'=> $people->id,
+                      
+                        ]);
+                }
+            }}
+    
         return redirect()->route('people.index')->with('success', 'People  details has been updated successfuly!');
         
             

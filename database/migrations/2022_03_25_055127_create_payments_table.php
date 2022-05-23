@@ -20,11 +20,12 @@ class CreatePaymentsTable extends Migration
            $table->foreignId('depend_id')->nullable();
            $table->enum('status',['active','inactive']);
            $table->date('deathdate')->nullable();
+           $table->string('description')->nullable();
 
            $table->timestamps();
 
            $table->foreign('familyhead_id')->references('id')->on('people')->onDelete('cascade');
-           $table->foreign('depend_id')->references('id')->on('people')->onDelete('cascade');
+           $table->foreign('depend_id')->references('id')->on('depends')->onDelete('cascade');
         });
     }
 

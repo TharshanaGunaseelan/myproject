@@ -14,16 +14,16 @@ class DashboardController extends Controller
         switch(Auth::user()->role->name){
            
                 case 'Admin':
-                   
-                return view('admin.admindashboard'); 
+                    return view('admin.admindashboard'); 
                     break;
+
                 case 'Management Assistant':
-                return view('admin.madashboard');   
+                    return view('admin.madashboard');   
                     break;  
+
                 case 'Development Officer':
-                    
-                return view('admin.dodashboard'); 
-                     break;
+                    return view('admin.dodashboard'); 
+                    break;
         }
        
     }

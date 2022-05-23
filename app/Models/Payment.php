@@ -17,7 +17,7 @@ class Payment extends Model
 
     public function depends()
     {
-        return $this->hasMany(Depend::class, 'familyhead_id');
+        return $this->belongsTo(Depend::class, 'depend_id');
     }
 
 }

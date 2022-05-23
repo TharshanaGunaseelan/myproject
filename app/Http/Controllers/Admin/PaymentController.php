@@ -7,6 +7,8 @@ use App\Http\Requests\Admin\PaymentUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
+use App\Models\People;
+use App\Models\Depend;
 
 
 
@@ -21,21 +23,15 @@ class PaymentController extends Controller
     }
 
     public function create(){
-        $q = request()->input('q');
-        if($q)
-        {
-
-            $people = People::where('nic',$q)->get();
-            dd($people);
-        }
         
-       return view('admin.payment.create');
+         return view('admin.payment.create');
 
     }
 
     public function dropdown(Request $request){
-        dd($request);
+       
         $people = People::where("nic",$request->nic)->get();
+        
         return response()->json($people);
 
     }
@@ -43,10 +39,25 @@ class PaymentController extends Controller
 
     public function store(PaymentStoreRequest $request){
         $data = $request->validated();
+       
+
+        if(People::where('nic',$data['nic'])->exists()){
+        $data['familyhead_id']=People::where('nic',$data['nic'])->value('id');
+        }else{
+            $data['familyhead_id']=null;
+        }
+
         
+        if(Depend::where('nic',$data['nic'])->exists()){
+            $data['depend_id']=Depend::where('nic',$data['nic'])->value('id');
+            }else{
+                $data['depend_id']=null;
+            }
+
          Payment::create([
-        'payment type' => $data['payment type'],
+        'paymenttype' => $data['paymenttype'],
         'status' => 'active',
+        'description' => $data['description'],
        
         'familyhead_id' => $data['familyhead_id'],
         'depend_id' => $data['depend_id'],
@@ -60,8 +71,12 @@ class PaymentController extends Controller
     }
 
    
-    public function show(People $people){
+    public function show(Payment $payment){
         return view('admin.payment.show',compact('payment'));
+    }
+
+    public function edit(Payment $payment){
+        return view('admin.payment.edit',compact('payment'));
     }
 
     public function update(Payment $people,PaymentUpdateRequest $request){
@@ -77,9 +92,13 @@ class PaymentController extends Controller
            return view('admin.payment.delete',compact('payment'));
         }
     
-        public function destroy(Payment $payment){
-            $payment->delete();
-            return redirect()->route('payment.index')->with('success', 'Payment details has been deleted successfuly!');
+        public function destroy(Payment $payment,Request $request){
+            $request->validate([
+                'deathdate' => 'required',
+                
+            ]);
+            $payment->update(['deathdate'=>$request->deathdate,'status'=>'inactive']);
+            return redirect()->route('payment.index')->with('success', 'Payment details has been updated successfuly!');
         }
 
     

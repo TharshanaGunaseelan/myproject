@@ -21,6 +21,10 @@ class People extends Model
         return $this->hasMany(Depend::class, 'familyhead_id');
     }
 
+    public function payments() {
+        return $this->hasMany(Payment::class,'familyhead_id');
+    }
+
 
     
 

@@ -26,13 +26,20 @@ class PeopleUpdateRequest extends FormRequest
     { $people = $this->people;
         return [
             'title' =>'required',
+            'titles' => 'nullable',
             'firstname' => 'required',
+            'firstnames'=>'nullable',
             'lastname'=>'required',
+            'lastnames'=>'nullable',
             'address' =>'required', 
             'age' => 'required',
+            'ages'=>'nullable',
             'religion' => 'required',
             'ethnic' => 'required',
             'nic' =>'required',
+            'nics'=>'nullable',
+            'gender'=>'required',
+            'genders'=>'nullable',
             'village_id' =>'required',
             
             

@@ -112,19 +112,28 @@
         var formContainer = $('#form-container');
         var addBtn = $('#add-btn');
 
-        function addNewItem(heading, name, amount) {
+        function addNewItem(title,firstname, lastname, nic,age,gender) {
           
             var newItem = formTemplate.clone();
             formContainer.find('.delete-item-btn').addClass('d-none');
             newItem.find('.delete-item-btn').removeClass('d-none');
-            if(heading){
-                newItem.find('.heading-input').val(heading)
+            if(title){
+                newItem.find('.title-input').val(title)
             }
-            if(name){
-                newItem.find('.name-input').val(name)
+            if(firstname){
+                newItem.find('.firstname-input').val(firstname)
             }
-            if(amount){
-                newItem.find('.cash-input').val(amount)
+            if(lastname){
+                newItem.find('.lastname-input').val(lastname)
+            }
+            if(nic){
+                newItem.find('.nic-input').val(nic)
+            }
+            if(age){
+                newItem.find('.age-input').val(age)
+            }
+            if(gender){
+                newItem.find('.gender-input').val(gender)
             }
             formContainer.append(newItem);
         }
@@ -138,7 +147,25 @@
             formContainer.find('.delete-item-btn').addClass('d-none');
             formContainer.find('.delete-item-btn').last().removeClass('d-none');
            
+      
         });
+        @if(isset($people))
+            var values= @json($people);
+            setEditValues(values);
+           
+        @endif
+
+function setEditValues(values){
+            var depends = values.depends;
+            if(depends[0] != null){
+            $.each(depends, function(key,value ) {
+                if(value == null){
+                    return false;
+                }
+                else{addNewItem(depends[key].title,depends[key].firstname,depends[key].lastname,depends[key].nic,depends[key].age,depends[key].gender);}
+            })
+            }
+        }
     });
 
 </script>

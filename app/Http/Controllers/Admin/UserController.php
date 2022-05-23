@@ -91,6 +91,9 @@ class UserController extends Controller
 
             $user->update($data);
             return redirect()->route('dashboard')->with('success', 'Your Profile Updated!');
+
+
+            
         }
     }
         public function delete(User $user){

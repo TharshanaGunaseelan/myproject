@@ -20,7 +20,7 @@ class CreatePeopleTable extends Migration
             $table->string('lastname');
             $table->string('address');
             $table->bigInteger('age');
-            $table->enum('gender',['Male','female']);
+            $table->enum('gender',['Male','Female']);
             $table->enum('religion',['Roman Catholic','Non Roman Catholic','Hindu','Islam','Buddhist']);
             $table->enum('ethnic',['Tamil','Sinhalese','Muslims']);
             $table->string('nic')->unique();

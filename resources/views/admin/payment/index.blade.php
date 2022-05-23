@@ -1,6 +1,5 @@
 @extends('layouts.admin.master')
 @section('title','Index')
-
 @section('content')
 
 <div class="row">
@@ -23,8 +22,9 @@
 <table class="table">
     <thead class="thead-light">
         <tr>
-          
-            <th>Payement Type</th>
+            <th>First Name</th>
+            <th>NIC</th>
+            <th>Payment Type</th>
             <th>Status</th>
             <th>Death Date</th>
             <th>Actions</th>
@@ -33,21 +33,29 @@
     <tbody>
         @foreach($payments as $payment)
         <tr>
-        
+        @if($payment->depends)
+
+         <td>{{ $payment->depends->firstname}}</td>
+         <td>{{ $payment->depends->nic}}</td>
+         @elseif($payment->people)
+          
+         <td>{{$payment->people->firstname}}</td>
+         <td>{{$payment->people->nic}}</td>
+        @endif
+
+       
        
         <td>{{ $payment->paymenttype}}</td>
         <td>{{ $payment->status}}</td>
         <td>{{ $payment->deathdate}}</td>
        
-       
-
-
-                            <td>
+                           <td>
                                 <a href="{{ route('payment.show',$payment->id)}}" class="btn btn-info btn-icon-split"><span class="text">Show</span></a>
                                 <a href="{{ route('payment.edit',$payment->id)}}" class="btn btn-info btn-icon-split"><span class="text">Edit</span></a>
-                                <a href="{{ route('payment.delete',$payment->id)}}" class="btn btn-info btn-icon-split"><span class="text">Delete</span></a>
+                                <a href="{{ route('payment.delete',$payment->id)}}" class="btn btn-info btn-icon-split"><span class="text">Close</span></a>
                             </td>
              </tr>
+</tr>
         @endforeach
     </tbody>
 </table>

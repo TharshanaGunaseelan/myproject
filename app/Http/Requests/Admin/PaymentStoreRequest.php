@@ -24,14 +24,10 @@ class PaymentStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' =>'required',
-            'statuses' =>'nullable',
-            'deathdate' => 'requried',
-            'deathdates' => 'nullable',
-            'payment type'=>'required',
-            'familyhead_id'=>'nullable',
-            'depend_id'=>'nullable',
-            
+            'paymenttype'=>'required',
+            'description'=>'nullable',
+            'nic'=>'required|unique:payments',
+        
         ];
     }
 }

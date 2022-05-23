@@ -63,8 +63,8 @@ Route::get('/', function () {
     Route::group(['prefix' => 'payments'], function () {
         Route::get('/', 'PaymentController@index')->name('payment.index');
         Route::get('/create','PaymentController@create')->name('payment.create');
-        Route::get('ajaxRequest','PaymentController@dropdown')->name('get.people');
-        Route::post('/','PaymentController@store')->name('payment.store');
+        Route::get('ajaxRequest','PaymentController@dropdown')->name('get.person');
+        Route::post('/store','PaymentController@store')->name('payment.store');
         
     Route::group(['prefix' => '{payment}'], function () {
         Route::get('/show','PaymentController@show')->name('payment.show');
@@ -75,6 +75,20 @@ Route::get('/', function () {
         });
     });
 
+    Route::group(['prefix' => 'depends'], function () {
+        Route::get('/', 'DependController@index')->name('depend.index');
+
+        Route::group(['prefix' => '{depend}'], function () {
+        Route::get('/change', 'DependController@change')->name('depend.change');
+        Route::get('/remove', 'DependController@remove')->name('depend.remove');
+
+     });
+    });
+
+    Route::group(['prefix' => 'reports'], function () {
+        Route::get('/', 'ReportController@payment')->name('payment.report');
+        
+    });
    
 });
 
